@@ -1,0 +1,6 @@
+.it-header-block-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Questo assicura che il contenitore occupi l'intera altezza del suo contenitore genitore */
+}

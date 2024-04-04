@@ -1,0 +1,43 @@
+/* Stile per il contenitore esterno */
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Questo assicura che il contenitore occupi l'intera altezza della viewport */
+    margin: 0;
+    padding: 0;
+}
+
+/* Stile per il contenitore interno */
+.container {
+    width: 50%; /* Puoi modificare questa percentuale per adattarla alle tue esigenze */
+    padding: 20px;
+    background-color: #f8f9fa; /* Questo è un colore di sfondo leggero, puoi cambiarlo a tuo piacimento */
+    border-radius: 5px; /* Questo aggiunge bordi arrotondati al contenitore del modulo */
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); /* Questo aggiunge un leggero ombreggiatura intorno al contenitore del modulo */
+}
+
+/* Stile per i campi del modulo */
+.form-group {
+    margin-bottom: 15px; /* Questo aggiunge un po' di spazio tra i campi del modulo */
+}
+
+.form-control {
+    width: 100%; /* Questo fa sì che i campi del modulo occupino l'intera larghezza del contenitore */
+    padding: 10px; /* Questo aggiunge un po' di imbottitura intorno ai campi del modulo */
+    border: 1px solid #ced4da; /* Questo aggiunge un bordo ai campi del modulo */
+    border-radius: 4px; /* Questo aggiunge bordi arrotondati ai campi del modulo */
+}
+
+/* Stile per il pulsante del modulo */
+.btn-primary {
+    color: #fff; /* Questo imposta il colore del testo del pulsante su bianco */
+    background-color: #007bff; /* Questo imposta il colore di sfondo del pulsante su un blu brillante */
+    border-color: #007bff; /* Questo imposta il colore del bordo del pulsante sullo stesso blu brillante */
+    padding: 10px 20px; /* Questo aggiunge un po' di imbottitura intorno al testo del pulsante */
+    text-align: center; /* Questo centra il testo del pulsante */
+    display: inline-block; /* Questo fa sì che il pulsante si comporti come un elemento inline */
+    font-size: 1rem; /* Questo imposta la dimensione del font del pulsante */
+    border-radius: 4px; /* Questo aggiunge bordi arrotondati al pulsante */
+    cursor: pointer; /* Questo cambia il cursore in un puntatore quando si passa sopra il pulsante */
+}
