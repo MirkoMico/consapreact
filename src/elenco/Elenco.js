@@ -4,10 +4,10 @@ import Filtri from '../componenti/Filtri';
 import icona from 'bootstrap-italia/dist/svg/sprites.svg'
 
 function Elenco  ()  {
-
+/* 
     const [richiesta, setRichiesta]= useState([]);
 
-    /* useEffect(()=>{
+     useEffect(()=>{
         fetch("http://localhost:8080/richiesta")
         .then((response)=>response.json())
         .then((data)=>{
@@ -17,9 +17,80 @@ function Elenco  ()  {
         .catch((error)=>{
             console.error("dati non caricati",error);
         })
-   },[]) */
+   },[])  */
 
-   const [richieste, setRichieste] = useState([]);
+   const [richiesta, setRichiesta] = useState([]);
+
+ /*  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch('http://localhost:8080/richiesta');
+        if (response.ok) {
+          const datiBackend = await response.json();
+          setRichiesta(datiBackend.elenco);
+        } else {
+          console.error('Errore nella risposta del server:', response.status);
+        }
+      } catch (error) {
+        console.error('Errore durante la chiamata al backend:', error);
+      }
+    }
+
+    fetchData();
+  }, []); */
+
+  useEffect(() => {
+    const fetchAndPopulateData = async () => {
+      try {
+        const urls = [
+          "http://localhost:8080/richiesta",
+        ];
+  
+        const requests = urls.map(async (url) => {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              erroreDTO: null,
+              filtri: {
+                "id": null,
+                "numeroTicket": null,
+                "applicativoId": null,
+                "oggetto": null,
+                "statoRichiestaConsapId": null,
+                "dataCreazione": null,
+                "statoApprovazioneConsapId": null,
+                "statoApprovazioneOsId": null,
+                "statoRichiestaOsId": null,
+                "dataStimaFinale": null,
+                "importo": null,
+                "commessaOsId": null
+              },
+              elenco: null,
+            }),
+          });
+          const data = await response.json();
+          return data.elenco;
+        });
+  
+        const richiestaData = await Promise.all(requests);
+        setRichiesta(richiestaData);
+        console.log("RichiestaData:", richiestaData);
+        console.log("Richiesta:", richiesta);
+      } catch (error) {
+        console.error("Errore durante il recupero dei dati delle richieste:", error);
+      }
+    };
+  
+    fetchAndPopulateData();
+  }, []);
+  
+
+
+
+   /* const [richieste, setRichieste] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);// Current page
     const [pageSize, setPageSize] = useState(2); // Number of items per page
     const [totalPages, setTotalPages] = useState(0);
@@ -49,7 +120,7 @@ function Elenco  ()  {
       setCurrentPage(newPage);
   };
 
-
+ */
 
    const prendiId = (id)=>{
     localStorage.setItem("richiesta_id",id)
@@ -89,7 +160,8 @@ function Elenco  ()  {
   </thead>
   <tbody>
    
-  {richieste.map((riga) => (
+  {richiesta.map((arrayInterno, index) => (
+    arrayInterno.map((riga) => (
           <tr key={riga.numeroTicket}>
             <td>{riga.numeroTicket}</td>
             <td>{riga.oggetto}</td>
@@ -113,12 +185,13 @@ function Elenco  ()  {
   </div>
 </div></td>
           </tr>
+    ))
         ))}
       </tbody>
 </table>
 
 
-
+{/* 
 <nav class="pagination-wrapper justify-content-center" aria-label="Navigazione centrata">
   <ul class="pagination">
     <li class={`page-item ${currentPage === 0 ? 'disabled' : ''}`}>
@@ -179,9 +252,9 @@ aria-current={currentPage === totalPages - 1 ? 'page' : null}>
       </div>
     </div>
   </div>
+ 
 
-
-</nav>
+     </nav>*/}
       
     </Layout>
   )

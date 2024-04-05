@@ -3,9 +3,9 @@ import Layout from '../componenti/Layout'
 
 function Visualizza ()  {
 
-    const [richiesta, setRichiesta] = useState([]);
+    
 
-  useEffect(() => {
+ /*   useEffect(() => {
     // Recupera l'ID della richiesta dal localStorage
     const richiestaId = localStorage.getItem('richiesta_id');
 
@@ -28,7 +28,64 @@ function Visualizza ()  {
       .catch(error => {
         console.error('Errore durante il recupero della richiesta:', error);
       });
+  }, []);  */
+
+
+  const [richiesta, setRichiesta] = useState([]);
+
+  useEffect(() => {
+      // Recupera l'ID della richiesta dal localStorage
+      const richiestaId = localStorage.getItem('richiesta_id');
+
+      // Se non è presente un ID nel localStorage, non fare nulla
+      if (!richiestaId) return;
+    const fetchAndPopulateData = async () => {
+      try {
+        const urls = [
+          "http://localhost:8080/richiesta",
+        ];
+  
+        const requests = urls.map(async (url) => {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              erroreDTO: null,
+              filtri: {
+                "id": richiestaId,
+                "numeroTicket": null,
+                "applicativoId": null,
+                "oggetto": null,
+                "statoRichiestaConsapId": null,
+                "dataCreazione": null,
+                "statoApprovazioneConsapId": null,
+                "statoApprovazioneOsId": null,
+                "statoRichiestaOsId": null,
+                "dataStimaFinale": null,
+                "importo": null,
+                "commessaOsId": null
+              },
+              elenco: null,
+            }),
+          });
+          const data = await response.json();
+          return data.elenco;
+        });
+  
+        const richiestaData = await Promise.all(requests);
+        setRichiesta(richiestaData);
+        console.log("RichiestaData:", richiestaData);
+        console.log("Richiesta:", richiesta);
+      } catch (error) {
+        console.error("Errore durante il recupero dei dati delle richieste:", error);
+      }
+    };
+  
+    fetchAndPopulateData();
   }, []);
+  
 
 
 
@@ -38,48 +95,54 @@ function Visualizza ()  {
   return (
     <Layout>
 
+ 
+
+
+  
     <article className='row'>
-    
-        <p></p>
-    
-    <h1>Visualizza Richiesta</h1>
+      <h1>Visualizza Richiesta</h1>
     </article>
-     <p></p>
-    <div className='row'>
-    
-    <div className='col-4'>
+
+
+    {richiesta.map((arrayInterno, index) => (
+     arrayInterno.map((item) => ( 
+      <div key={index}>
+
+<div  className='row'>
+
+<div className='col-4'>
             <div class="form-group">
       <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" readOnly value={richiesta? richiesta.numeroTicket : ''} />
+       <input type="text" class="form-control" id="formGroupExampleInput" readOnly value={item.numeroTicket} /> 
+    </div>
+    </div>
+
+       <div className='col-8'>
+            <div class="form-group">
+      <label for="formGroupExampleInput"></label>
+      <input type="text" class="form-control" id="formGroupExampleInput" readOnly value={item.oggetto}/>
+    </div>
     </div>
     </div>
     
-    <div className='col-8'>
-            <div class="form-group">
-      <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" readOnly value={richiesta? richiesta.oggetto : ''}/>
-    </div>
-    </div>
-    </div>
     
     
     <p></p>
-    
-    
+
     <div className='row'>
     
     <div className='col-4'>
             <div class="form-group">
       <label for="formGroupExampleInput"></label>
       <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
-      value={richiesta? richiesta.applicativo?.descApplicativo : ''}/>
+      value={item.applicativo ? item.applicativo.descApplicativo : ''}/>
     </div>
     </div>
     
     <div className='col-4'>
     <div class="form-group">
         <label class="active" for="dateStandard"></label>
-        <input type="date" id="dateStandard" name="dateStandard" readOnly value={richiesta? richiesta.dataCreazione : ''}/>
+        <input type="date" id="dateStandard" name="dateStandard" readOnly value={item.dataCreazione}/>
     </div>
     </div>
     
@@ -87,99 +150,97 @@ function Visualizza ()  {
             <div class="form-group">
       <label for="formGroupExampleInput"></label>
       <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
-      value={richiesta? richiesta.statoRichiestaConsap?.descStatoRichiestaConsap : ''}/>
+      value={item.statoRichiestaConsap ? item.statoRichiestaConsap.descStatoRichiestaConsap : ''}/>
     </div>
     </div>
     </div>
     
     
     <p></p>
-    
-    
-    
+
     <div className='row'>
     
     <div className='col-4'>
             <div class="form-group">
       <label for="formGroupExampleInput"></label>
       <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
-      value={richiesta? richiesta.statoApprovazioneConsap?.descStatoApprovazioneConsap : ''}/>
+      value={item.statoRichiestaConsap ? item.statoRichiestaConsap.descStatoRichiestaConsap : ''}/>
     </div>
     </div>
-    
-    <div className='col-4'>
-            <div class="form-group">
-      <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
-      value={richiesta? richiesta.statoRichiestaOs?.descStatoRichiestaOs : ''}/>
-    </div>
-    </div>
-    
-    <div className='col-4'>
-            <div class="form-group">
-      <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
-      value={richiesta? richiesta.statoApprovazioneOs?.descStatoApprovazioneOs : ''}/>
-    </div>
-    </div>
-    </div>
-    
-    
-    <p></p>
-    
-    <div className='row'>
     
     <div className='col-4'>
     <div class="form-group">
         <label class="active" for="dateStandard"></label>
-        <input type="date" id="dateStandard" name="dateStandard" readOnly value={richiesta? richiesta.dataStimaFine : ''}/>
+        <input type="text" id="dateStandard" name="dateStandard" readOnly 
+        value={item.statoRichiestaOs ? item.statoRichiestaOs.descStatoRichiestaOs : ''}/>
     </div>
     </div>
     
     <div className='col-4'>
             <div class="form-group">
       <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" readOnly value={richiesta? richiesta.importo : ''}/>
-    </div>
-    </div>
-    
-    <div className='col-4'>
-            <div class="form-group">
-      <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" readOnly value={richiesta? richiesta.commessaOs?.numeroCommessa : ''}/>
+      <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
+      value={item.statoApprovazioneOs ? item.statoApprovazioneOs.descStatoApprovazioneOs : ''}/>
     </div>
     </div>
     </div>
-    
+
     <p></p>
-    
+
     <div className='row'>
     
     <div className='col-4'>
             <div class="form-group">
       <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" placeholder='Inserisci'/>
+      <input type="date" class="form-control" id="formGroupExampleInput" readOnly 
+      value={item.dataStimaFinale}/>
+    </div>
+    </div>
+    
+    <div className='col-4'>
+    <div class="form-group">
+        <label class="active" for="dateStandard"></label>
+        <input type="number" id="dateStandard" name="dateStandard" readOnly 
+        value={item.importo}/>
     </div>
     </div>
     
     <div className='col-4'>
             <div class="form-group">
       <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" placeholder='Inserisci'/>
+      <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
+      value={item.commessaOs ? item.commessaOs.codiceCommessaOs : ''}/>
     </div>
     </div>
-
-    
     </div>
 
 
-    <div className='col-4 ' >
-  <button type="button" class="btn btn-outline-primary" onClick={() => window.location.href = "../elenco"} 
-  style={{marginLeft: '10px'}}>Elenco</button>
+<p></p>
 
-<button type="button" class="btn btn-outline-success" 
-  style={{marginLeft: '10px'}}>Stampa</button>
-</div>
+      </div>
+    )))
+  )}
+
+
+<p></p>
+
+       
+   
+
+    <div className='col-4'>
+      <p></p>
+      <button type="button" className="btn btn-outline-primary" onClick={() => window.location.href = "../elenco"} style={{marginLeft: '10px'}}>Elenco</button>
+      <button type="button" className="btn btn-outline-success" style={{marginLeft: '10px'}}>Stampa</button>
+    </div>
+
+ 
+  
+  </Layout>
+  
+
+
+);
+
     
     
     
@@ -191,17 +252,8 @@ function Visualizza ()  {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        </Layout>
-  )
+       
+  
 }
 
 export default Visualizza

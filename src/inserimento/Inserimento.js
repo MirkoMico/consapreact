@@ -70,9 +70,9 @@ function Inserimento  ()  {
 
 
  // Data Stima Fine
- const [dataStimaFine, setDataStimaFine] = useState("");
+ const [dataStimaFinale, setDataStimaFinale] = useState("");
  const handleDataStimaFineChange = (event) => {
-   setDataStimaFine(event.target.value);
+   setDataStimaFinale(event.target.value);
  }
 
 
@@ -83,71 +83,183 @@ function Inserimento  ()  {
    setCommessaOsId(event.target.value);
  }
 
+ 
+
 
  // Importo
  const [importo, setImporto] = useState("");
  const handleImportoChange = (event) => {
-   setImporto(event.target.value);
- }
+ const formattedImporto = event.target.value.replace(/[^\d.]/g, '');
+  
+   setImporto(formattedImporto); 
+ } 
+ 
+
 
 
  // Data Inserimento
- const [dataInserimento, setDataInserimento] = useState("");
+ /* const [dataInserimento, setDataInserimento] = useState("");
  const handleDataInserimentoChange = (event) => {
    setDataInserimento(event.target.value);
- }
+ } */
 
 
  // Utente Inserimento
- const [utenteInserimento, setUtenteInserimento] = useState("");
+/*  const [utenteInserimento, setUtenteInserimento] = useState("");
  const handleUtenteInserimentoChange = (event) => {
    setUtenteInserimento(event.target.value);
- }
+ } */
 
 
  
 
- useEffect(() => {
 
-  Promise.all([
-    fetch(`http://localhost:8080/applicativo`),
-    fetch(`http://localhost:8080/statoRichiestaConsap`),
-    fetch(`http://localhost:8080/statoApprovazioneConsap`),
-    fetch(`http://localhost:8080/statoRichiestaOs`),
-    fetch(`http://localhost:8080/statoApprovazioneOs`),
-    fetch(`http://localhost:8080/commessaOs`)
-  ])
-    .then(responses => Promise.all(responses.map(response => {
-      if (!response.ok) {
-        throw new Error("Errore durante il recupero della richiesta");
-      }
-      return response.json();
-    })))
-    .then(data => {
-      const [applicativo, statoRichiestaConsap, statoApprovazioneConsap, statoRichiestaOs, statoApprovazioneOs, commessaOs] = data;
-      setApplicativo(applicativo);
-      setStatoRichiestaConsap(statoRichiestaConsap);
-      setStatoApprovazioneConsap(statoApprovazioneConsap);
-      setStatoRichiestaOs(statoRichiestaOs);
-      setStatoApprovazioneOs(statoApprovazioneOs);
-      setCommessaOs(commessaOs);
-      console.log("Applicativo:", applicativo);
-      console.log("Stato Richiesta Consap:", statoRichiestaConsap);
-      console.log("Stato Approvazione Consap:", statoApprovazioneConsap);
-      console.log("Stato Richiesta Os:", statoRichiestaOs);
-      console.log("Stato Approvazione Os:", statoApprovazioneOs);
-      console.log("Commessa Os:", commessaOs);
-    })
-    .catch(error => {
-      console.error("Errore durante il recupero della richiesta:", error);
+
+
+ useEffect(() => {
+  const fetchAndPopulateData = async () => {
+    try {
+      const urls = [
+        "http://localhost:8080/applicativo",
+        "http://localhost:8080/statoRichiestaConsap",
+        "http://localhost:8080/approvazioneConsap",
+        "http://localhost:8080/statoRichiestaOs",
+        "http://localhost:8080/statoApprovazioneOs",
+        "http://localhost:8080/commessaOs",
+      ];
+
+      const requests = urls.map(async (url) => {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            erroreDTO: null,
+            filtri: {
+              id: null,
+              descrizione: null,
+            },
+            elenco: null,
+          }),
+        });
+        const data = await response.json();
+        return data.elenco;
+      });
+
+      const [
+        applicativoData,
+        statoRichiestaConsapData,
+        statoApprovazioneConsapData,
+        statoRichiestaOsData,
+        statoApprovazioneOsData,
+        commessaOsData,
+      ] = await Promise.all(requests);
+
+      setApplicativo(applicativoData);
+      setStatoRichiestaConsap(statoRichiestaConsapData);
+      setStatoApprovazioneConsap(statoApprovazioneConsapData);
+      setStatoRichiestaOs(statoRichiestaOsData);
+      setStatoApprovazioneOs(statoApprovazioneOsData);
+      setCommessaOs(commessaOsData);
+      console.log("Applicativo:", applicativoData);
+      console.log("Stato Richiesta Consap:", statoRichiestaConsapData);
+      console.log("Stato Approvazione Consap:", statoApprovazioneConsapData);
+      console.log("Stato Richiesta Os:", statoRichiestaOsData);
+      console.log("Stato Approvazione Os:", statoApprovazioneOsData);
+      console.log("Commessa Os:", commessaOsData);
+    } catch (error) {
+      console.error("Errore durante il recupero dei dati:", error);
+    }
+  };
+
+  fetchAndPopulateData();
+}, []);
+
+
+
+const salvaRichiesta = async () => {
+  try {
+    // Converti i valori stringa in numeri
+    const parsedNumeroTicket = parseInt(numeroTicket);
+    const parsedApplicativoId = parseInt(applicativoId);
+    const parsedStatoRichiestaConsapId = parseInt(statoRichiestaConsapId);
+    const parsedStatoApprovazioneConsapId = parseInt(statoApprovazioneConsapId);
+    const parsedStatoRichiestaOsId = parseInt(statoRichiestaOsId);
+    const parsedStatoApprovazioneOsId = parseInt(statoApprovazioneOsId);
+    const parsedCommessaOsId = parseInt(commessaOsId);
+    const parsedImporto = importo;
+
+    
+   
+
+    const data = {
+      erroreDTO: null,
+      filtri: null,
+      elenco:  [
+          {
+              numeroTicket: parsedNumeroTicket,
+              applicativo: {
+                  applicativoId: parsedApplicativoId
+              },
+              oggetto,
+               statoRichiestaConsap: {
+                  statoRichiestaConsapId: parsedStatoRichiestaConsapId
+              },
+              dataCreazione: dataCreazione,
+              statoApprovazioneConsap: {
+                  statoApprovazioneConsapId: parsedStatoApprovazioneConsapId
+              },
+              statoApprovazioneOs: {
+                  statoApprovazioneOsId: parsedStatoApprovazioneOsId
+              },
+              statoRichiestaOs: {
+                  statoRichiestaOsId: parsedStatoRichiestaOsId
+              },
+              dataStimaFinale: dataStimaFinale,
+               importo: parsedImporto, 
+              commessaOs: {
+                  commessaOsId: parsedCommessaOsId
+              } 
+          }
+      ]
+    };
+
+    console.log(JSON.stringify(data) + "data");
+
+    const response = await fetch("http://localhost:8080/richiesta/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
 
-  
+    if (!response.ok) {
+      throw new Error("Errore durante il salvataggio dei dati");
+    }
+
+    const responseData = await response.json();
+    console.log("Dati salvati con successo:", responseData);
+    // Aggiungi eventuali azioni aggiuntive dopo il salvataggio dei dati
+  } catch (error) {
+    console.error("Errore durante il salvataggio dei dati:", error);
+  }
+};
 
 
-  
- }, []);
-const salvaRichiesta = () => {
+
+
+
+
+ 
+
+ 
+
+
+
+
+ /* const salvaRichiesta = () => {
   // Creazione dell'oggetto con i campi da inviare al server
   const data = {
     numeroTicket,
@@ -161,12 +273,12 @@ const salvaRichiesta = () => {
     dataStimaFine,
     commessaOs:{commessaOsId},
     importo,
-    dataInserimento,
-    utenteInserimento
+   // dataInserimento,
+   // utenteInserimento
   };
   console.log(data +"data")
   // Effettua la richiesta POST al server
-  fetch("http://localhost:8080/richiesta", {
+  fetch("http://localhost:8080/richiesta/new", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -189,13 +301,15 @@ const salvaRichiesta = () => {
 
 
 
+  }; */
 
 
+  
+  
 
-
-
-
-  };
+  
+  
+  
   
   
 
@@ -351,7 +465,7 @@ const salvaRichiesta = () => {
 <div class="form-group">
     <label class="active" for="dateStandard">Data Stima Fine</label>
     <input type="date" id="dateStandard" name="dateStandard"
-     value={dataStimaFine} onChange={handleDataStimaFineChange}/>
+     value={dataStimaFinale} onChange={handleDataStimaFineChange}/>
 </div>
 </div>
 
@@ -366,7 +480,7 @@ const salvaRichiesta = () => {
        key={commessaOsId}
        value={commessaOs.commessaOsId}
      >
-       {commessaOs.numeroCommessa}
+       {commessaOs.codiceCommessaOs}
      </option>
    ))}
   </select>
@@ -384,7 +498,7 @@ const salvaRichiesta = () => {
 
 <p></p>
 
-<div className='row'>
+{/* <div className='row'>
 
 <div className='col-4'>
         <div class="form-group">
@@ -402,13 +516,13 @@ const salvaRichiesta = () => {
 </div>
 </div>
 </div>
-
+ */}
 <p></p>
 
 <div className='row'>
 <div className='col-4'>
 
-<button type="button" class="btn btn-outline-primary" onClick={salvaRichiesta}>Salva</button>
+<button type="button" class="btn btn-outline-primary" onClick={salvaRichiesta} >Salva</button>
 
 </div>
 </div>
