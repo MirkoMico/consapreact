@@ -133,9 +133,14 @@ useEffect(() => {
     const isStatoRichiestaOsSelected = statoRichiestaOsId !== '';
     const isStatoApprovazioneConsapSelected = statoApprovazioneConsapId !== '';
     const isStatoApprovazioneOsSelected = statoApprovazioneOsId !== '';
+   
+   
+   
     setIsButtonActive(isNumeroTicketValid || (isOggettoSelected && isApplicativoSelected) || 
     (isStatoRichiestaConsapSelected && isStatoRichiestaOsSelected) ||
     (isStatoApprovazioneConsapSelected && isStatoApprovazioneOsSelected) );
+
+    
 }, [numeroTicket, oggetto, applicativoId, statoRichiestaConsapId, 
   statoRichiestaOsId, statoApprovazioneConsapId, statoApprovazioneOsId]); // Aggiungi numeroTicket come dipendenza dell'effetto per eseguirlo ogni volta che il valore cambia
 
