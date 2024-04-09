@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Layout from '../componenti/Layout'
 import { Link } from 'react-router-dom';
 import ServiziGet from '../componenti/ServiziGet';
+import Percorso from './Percorso';
 
 
 
@@ -11,30 +12,41 @@ function Modifica ()  {
   
    // Numero Ticket
  const [numeroTicket, setNumeroTicket] = useState("");
- /* const handleNumeroTicketChange = (event) => {
-   const cleanedValueNumeroTicket = event.target.value.replace(/[^0-9]/g, "");
-   setNumeroTicket(cleanedValueNumeroTicket);
- }; */
+
 
 
  // Oggetto
  const [oggetto, setOggetto] = useState("");
- /* const handleOggettoChange = (event) => {
+  const handleOggettoChange = (event) => {
    setOggetto(event.target.value);
  }
- */
+ 
 
  // Applicativo
- //const [applicativo, setApplicativo] = useState([]);
+ const [applicativo, setApplicativo] = useState([]);
  const [applicativoId, setApplicativoId] = useState("");
- //const handleApplicativoChange = (event) => {
+ const handleApplicativoChange = (event, outerIndex, innerIndex) => {
+
+  const { value } = event.target;
+
+  // Copia l'array richiesta
+  const updatedRichiesta = [...richiesta];
+
+  // Modifica il valore di commessaOsId per l'elemento specificato
+  updatedRichiesta[outerIndex][innerIndex].statoRichiestaConsap.statoRichiestaConsapId = value;
+
+  // Aggiorna lo stato con l'array modificato
+  setRichiesta(updatedRichiesta);
+
+
  //  setApplicativoId(event.target.value);
- //};
+ };
 
 
  // Data Creazione
  const [dataCreazione, setDataCreazione] = useState("");
  const handleDataCreazioneChange = (event) => {
+
    setDataCreazione(event.target.value);
  }
 
@@ -42,54 +54,127 @@ function Modifica ()  {
  // Stato Richiesta Consap
  const [statoRichiestaConsap, setStatoRichiestaConsap] = useState([]);
  const [statoRichiestaConsapId, setStatoRichiestaConsapId] = useState("");
- const handleStatoRichiestaConsapChange = (event) => {
-   setStatoRichiestaConsapId(event.target.value);
+ const handleStatoRichiestaConsapChange = (event, outerIndex, innerIndex) => {
+  const { value } = event.target;
+
+  // Copia l'array richiesta
+  const updatedRichiesta = [...richiesta];
+
+  // Modifica il valore di commessaOsId per l'elemento specificato
+  updatedRichiesta[outerIndex][innerIndex].statoRichiestaConsap.statoRichiestaConsapId = value;
+
+  // Aggiorna lo stato con l'array modificato
+  setRichiesta(updatedRichiesta);
+  console.log("nuova stampa"+statoRichiestaConsapId + ' ' + outerIndex + ' ' + innerIndex + handleStatoRichiestaConsapChange);
  }
 
  // Stato Approvazione Consap
  const [statoApprovazioneConsap, setStatoApprovazioneConsap] = useState([]);
  const [statoApprovazioneConsapId, setStatoApprovazioneConsapId] = useState("");
- const handleStatoApprovazioneConsapChange = (event) => {
-   setStatoApprovazioneConsapId(event.target.value);
+ const handleStatoApprovazioneConsapChange = (event, outerIndex, innerIndex) => {
+  const { value } = event.target;
+
+  // Copia l'array richiesta
+  const updatedRichiesta = [...richiesta];
+
+  // Modifica il valore di commessaOsId per l'elemento specificato
+  updatedRichiesta[outerIndex][innerIndex].statoApprovazioneConsap.statoApprovazioneConsapId = value;
+
+  // Aggiorna lo stato con l'array modificato
+  setRichiesta(updatedRichiesta);
+  console.log(statoApprovazioneConsapId);
  }
 
 
  // Stato Richiesta Os
  const [statoRichiestaOs, setStatoRichiestaOs] = useState([]);
  const [statoRichiestaOsId, setStatoRichiestaOsId] = useState("");
- const handleStatoRichiestaOsChange = (event) => {
-   setStatoRichiestaOsId(event.target.value);
+ const handleStatoRichiestaOsChange = (event, outerIndex, innerIndex) => {
+  const { value } = event.target;
+
+  // Copia l'array richiesta
+  const updatedRichiesta = [...richiesta];
+
+  // Modifica il valore di commessaOsId per l'elemento specificato
+  updatedRichiesta[outerIndex][innerIndex].statoRichiestaOs.statoRichiestaOsId = value;
+
+  // Aggiorna lo stato con l'array modificato
+  setRichiesta(updatedRichiesta);
+   
  }
 
 
  // Stato Approvazione Os
  const [statoApprovazioneOs, setStatoApprovazioneOs] = useState([]);
  const [statoApprovazioneOsId, setStatoApprovazioneOsId] = useState("");
- const handleStatoApprovazioneOsChange = (event) => {
-   setStatoApprovazioneOsId(event.target.value);
- }
+ const handleStatoApprovazioneOsChange = (event ,outerIndex, innerIndex) => {
+  const { value } = event.target;
+
+  // Copia l'array richiesta
+  const updatedRichiesta = [...richiesta];
+
+ 
+  updatedRichiesta[outerIndex][innerIndex].statoApprovazioneOs.statoApprovazioneOsId = value;
+
+  // Aggiorna lo stato con l'array modificato
+  setRichiesta(updatedRichiesta);
+};
+   
+
 
 
  // Data Stima Fine
- const [dataStimaFine, setDataStimaFine] = useState("");
- const handleDataStimaFineChange = (event) => {
-   setDataStimaFine(event.target.value);
- }
+const [dataStimaFine, setDataStimaFine] = useState("");
+
+const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
+  const { value } = event.target;
+
+  // Copia l'array richiesta
+  const updatedRichiesta = [...richiesta];
+
+  // Modifica il valore di dataStimaFine per l'elemento specificato
+  updatedRichiesta[outerIndex][innerIndex].dataStimaFinale = value;
+
+  // Aggiorna lo stato con l'array modificato
+  setRichiesta(updatedRichiesta);
+};
 
 
  // Commessa Os
  const [commessaOs, setCommessaOs] = useState([]);
  const [commessaOsId, setCommessaOsId] = useState("");
- const handleCommessaOsChange = (event) => {
+/*  const handleCommessaOsChange = (event) => {
    setCommessaOsId(event.target.value);
- }
+ } */
+ const handleCommessaOsChange = (event, outerIndex, innerIndex) => {
+  const { value } = event.target;
+
+  // Copia l'array richiesta
+  const updatedRichiesta = [...richiesta];
+
+  // Modifica il valore di commessaOsId per l'elemento specificato
+  updatedRichiesta[outerIndex][innerIndex].commessaOs.commessaOsId = value;
+
+  // Aggiorna lo stato con l'array modificato
+  setRichiesta(updatedRichiesta);
+};
 
 
- // Importo
+
+ 
  const [importo, setImporto] = useState("");
- const handleImportoChange = (event) => {
-   setImporto(event.target.value);
- }
+ const handleImportoChange = (event, index, innerIndex) => {
+  const { value } = event.target;
+
+  // Copia l'array richiesta
+  const updatedRichiesta = [...richiesta];
+
+  // Modifica il valore di importo per l'elemento specificato
+  updatedRichiesta[index][innerIndex].importo = value;
+
+  // Aggiorna lo stato con l'array modificato
+  setRichiesta(updatedRichiesta);
+};
 
 
  // Data Modifica
@@ -122,86 +207,149 @@ function Modifica ()  {
  }, [dataModifica, utenteModifica]);
  
 
-    
+ 
 
-    useEffect(() => {
+  
+
+      useEffect(() => {
         // Recupera l'ID della richiesta dal localStorage
         const richiestaId = localStorage.getItem('richiesta_id');
-      
+  
         // Se non è presente un ID nel localStorage, non fare nulla
         if (!richiestaId) return;
-      
-        // Effettua una richiesta GET al server per recuperare la richiesta con l'ID specificato
-        fetch(`http://localhost:8080/richiesta/${richiestaId}`)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Errore durante il recupero della richiesta');
-            }
-            return response.json();
-          })
-          .then(data => {
-            // Imposta lo stato con i dati della richiesta ottenuti dal server
-            setRichiesta(data);
-            console.log(data); // Stampa i dati acquisiti dal server
-
-
-            setNumeroTicket(data.numeroTicket);
-            setOggetto(data.oggetto);
-            setApplicativoId(data.applicativo.applicativoId);
-            setDataCreazione(data.dataCreazione);
-            setImporto(data.importo);
-            setStatoRichiestaConsapId(data.statoRichiestaConsap.statoRichiestaConsapId);
-            setStatoApprovazioneConsapId(data.statoApprovazioneConsap.statoApprovazioneConsapId);
-            setStatoRichiestaOsId(data.statoRichiestaOs.statoRichiestaOsId);
-            setStatoApprovazioneOsId(data.statoApprovazioneOs.statoApprovazioneOsId);
-            setCommessaOsId(data.commessaOs.commessaOsId);
-            setDataStimaFine(data.dataStimaFine);
-           // setDataModifica(data.dataModifica);
-           // setUtenteModifica(data.utenteModifica);
-            setUtenteInserimento(data.utenteInserimento);
-            setDataInserimento(data.dataInserimento);
-            console.log(data +"dati riportati");
-          })
-          .catch(error => {
-            console.error('Errore durante il recupero della richiesta:', error);
-          });
-      
-          Promise.all([
-            
-            fetch(`http://localhost:8080/statoRichiestaConsap`),
-            fetch(`http://localhost:8080/statoApprovazioneConsap`),
-            fetch(`http://localhost:8080/statoRichiestaOs`),
-            fetch(`http://localhost:8080/statoApprovazioneOs`),
-            fetch(`http://localhost:8080/commessaOs`)
-          ])
-            .then(responses => Promise.all(responses.map(response => {
-              if (!response.ok) {
-                throw new Error("Errore durante il recupero della richiesta");
-              }
-              return response.json();
-            })))
-            .then(data => {
-              const [ statoRichiestaConsap, statoApprovazioneConsap, statoRichiestaOs, statoApprovazioneOs, commessaOs] = data;
-              
-              setStatoRichiestaConsap(statoRichiestaConsap);
-              setStatoApprovazioneConsap(statoApprovazioneConsap);
-              setStatoRichiestaOs(statoRichiestaOs);
-              setStatoApprovazioneOs(statoApprovazioneOs);
-              setCommessaOs(commessaOs);
-              
-              console.log("Stato Richiesta Consap:", statoRichiestaConsap);
-              console.log("Stato Approvazione Consap:", statoApprovazioneConsap);
-              console.log("Stato Richiesta Os:", statoRichiestaOs);
-              console.log("Stato Approvazione Os:", statoApprovazioneOs);
-              console.log("Commessa Os:", commessaOs);
-            })
-            .catch(error => {
-              console.error("Errore durante il recupero della richiesta:", error);
+      const fetchAndPopulateData = async () => {
+        try {
+          const urls = [
+            "http://localhost:8080/richiesta",
+          ];
+    
+          const requests = urls.map(async (url) => {
+            const response = await fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                erroreDTO: null,
+                filtri: {
+                  "id": richiestaId,
+                  "numeroTicket": null,
+                  "applicativoId": null,
+                  "oggetto": null,
+                  "statoRichiestaConsapId": null,
+                  "dataCreazione": null,
+                  "statoApprovazioneConsapId": null,
+                  "statoApprovazioneOsId": null,
+                  "statoRichiestaOsId": null,
+                  "dataStimaFinale": null,
+                  "importo": null,
+                  "commessaOsId": null
+                },
+                elenco: null,
+              }),
             });
+            const data = await response.json();
+             // Parsa l'importo come stringa anziché numero
+             const richiestaConImportoStringa = data.elenco.map(item => ({
+              ...item,
+              importo: item.importo.toString()
+          }));
+          return richiestaConImportoStringa;
+      });
+
+
+
+/* 
+            return data.elenco;
+          }); */
+    
+          const richiesta = await Promise.all(requests);
+          setRichiesta(richiesta);
+          console.log("Richiesta:", richiesta);
+          //console.log("Richiesta:", richiesta);
+        } catch (error) {
+          console.error("Errore durante il recupero dei dati delle richieste:", error);
+        }
         
+      };
+    
+      fetchAndPopulateData();
+    }, []); 
+
+    
 
 
-      }, []);
+
+
+
+    useEffect(() => {
+      const fetchAndPopulateDataComboBox = async () => {
+        try {
+          const urls = [
+            "http://localhost:8080/applicativo",
+            "http://localhost:8080/statoRichiestaConsap",
+            "http://localhost:8080/approvazioneConsap",
+            "http://localhost:8080/statoRichiestaOs",
+            "http://localhost:8080/statoApprovazioneOs",
+            "http://localhost:8080/commessaOs",
+          ];
+    
+          const requests = urls.map(async (url) => {
+            const response = await fetch(url, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                erroreDTO: null,
+                filtri: {
+                  id: null,
+                  descrizione: null,
+                },
+                elenco: null,
+              }),
+            });
+            const data = await response.json();
+            return data.elenco;
+          });
+    
+          const [
+            applicativoData,
+            statoRichiestaConsapData,
+            statoApprovazioneConsapData,
+            statoRichiestaOsData,
+            statoApprovazioneOsData,
+            commessaOsData,
+          
+          ] = await Promise.all(requests);
+    
+          setApplicativo(applicativoData);
+          setStatoRichiestaConsap(statoRichiestaConsapData);
+          setStatoApprovazioneConsap(statoApprovazioneConsapData);
+          setStatoRichiestaOs(statoRichiestaOsData);
+          setStatoApprovazioneOs(statoApprovazioneOsData);
+          setCommessaOs(commessaOsData);
+          
+          console.log("Applicativo:", applicativoData);
+          console.log("Stato Richiesta Consap:", statoRichiestaConsapData);
+          console.log("Stato Approvazione Consap:", statoApprovazioneConsapData);
+          console.log("Stato Richiesta Os:", statoRichiestaOsData);
+          console.log("Stato Approvazione Os:", statoApprovazioneOsData);
+          console.log("Commessa Os:", commessaOsData);
+        } catch (error) {
+          console.error("Errore durante il recupero dei dati:", error);
+        }
+      };
+    
+      fetchAndPopulateDataComboBox();
+    }, []);
+
+
+
+
+
+     
+    
       
 
 
@@ -237,68 +385,100 @@ function Modifica ()  {
 
 
 
-   // Funzione di gestione dell'invio del modulo
 
   
     
   
 
-  const salvaRichiesta = () => {
-    console.log("ho cliccato");
-    // Creazione dell'oggetto con i campi da inviare al server
-    const data = {
-      numeroTicket,
-      oggetto,
-      applicativo:{applicativoId},
-      dataCreazione:dataCreazione,
-      statoRichiestaConsap:{statoRichiestaConsapId},
-      statoApprovazioneConsap:{statoApprovazioneConsapId},
-      statoRichiestaOs:{statoRichiestaOsId},
-      statoApprovazioneOs:{statoApprovazioneOsId},
-      dataStimaFine:dataStimaFine,
-      commessaOs:{commessaOsId},
-      importo:importo,
-      dataModifica,
-      utenteModifica,
-      dataInserimento:dataInserimento,
-      utenteInserimento:utenteInserimento
-    };
-    console.log(JSON.stringify(data) +  "prova1");
-    // Effettua la richiesta POST al server
+   const salvaRichiesta = async () => {
+     // Ottieni i dati della richiesta dalla variabile di stato
+     const richiestaId = localStorage.getItem('richiesta_id');
+     
+   
 
+     const richiestaData = richiesta[0][0]; //per snidare l array di array
+    // console.log(JSON.stringify(richiestaData) + "richiestaData ");
 
-    const richiestaId = localStorage.getItem('richiesta_id');
+    try {
+      // Converti i valori stringa in numeri
+       const parsedNumeroTicket = parseInt(richiestaData.numeroTicket);
+      console.log(parsedNumeroTicket + "numero ticket");
+      const parsedApplicativoId = parseInt(richiestaData.applicativo.applicativoId);
+      console.log(parsedApplicativoId + "applicativo");
+      const parsedStatoRichiestaConsapId = parseInt(richiestaData.statoRichiestaConsap.statoRichiestaConsapId);
+      console.log(parsedStatoRichiestaConsapId + "stato richiesta consap");
+      const parsedStatoApprovazioneConsapId = parseInt(richiestaData.statoApprovazioneConsap.statoApprovazioneConsapId);
+      const parsedStatoRichiestaOsId = parseInt(richiestaData.statoRichiestaOs.statoRichiestaOsId);
+      const parsedStatoApprovazioneOsId = parseInt(richiestaData.statoApprovazioneOs.statoApprovazioneOsId);
+      const parsedCommessaOsId = parseInt(richiestaData.commessaOs.commessaOsId);
+      const parsedImporto = richiestaData.importo;
+      const oggettoMd = richiestaData.oggetto;
+      const dataCreazioneMd = richiestaData.dataCreazione;
+      const dataStimaFineMd = richiestaData.dataStimaFinale;
 
-    fetch(`http://localhost:8080/richiesta/${richiestaId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        
-      } ,
+       
       
-      body: JSON.stringify(data),
-      
-    })
-      .then((response) => {
-        console.log(response + data + "prova");
-        if (!response.ok) {
-          throw new Error("Errore durante il salvataggio dei dati");
-        }
-        console.log("Dati salvati con successo" + response);
-      })
-      .catch((error) => {
-        console.error("Errore durante il salvataggio dei dati:", error.message);
-      });
- 
   
- 
-
-
+      const data = {
+        erroreDTO: null,
+        filtri: {
+          id: richiestaId,
+        },
+        elenco:  [
+            {
+                numeroTicket: parsedNumeroTicket,
+                applicativo: {
+                    applicativoId: parsedApplicativoId
+                },
+                oggetto: oggettoMd,
+                statoRichiestaConsap: {
+                    statoRichiestaConsapId: parsedStatoRichiestaConsapId
+                },
+                dataCreazione: dataCreazioneMd,
+                statoApprovazioneConsap: {
+                    statoApprovazioneConsapId: parsedStatoApprovazioneConsapId
+                },
+                statoApprovazioneOs: {
+                    statoApprovazioneOsId: parsedStatoApprovazioneOsId
+                },
+                statoRichiestaOs: {
+                    statoRichiestaOsId: parsedStatoRichiestaOsId
+                },
+                dataStimaFinale: dataStimaFineMd,
+                importo: parsedImporto, 
+                commessaOs: {
+                    commessaOsId: parsedCommessaOsId
+                } 
+            }
+        ]
+      };
+  
+      console.log("STAMPAJSONO  " + JSON.stringify(data));
+  
+      const response = await fetch("http://localhost:8080/richiesta/edit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Errore durante il salvataggio dei dati");
+      }
+  
+      const responseData = await response.json();
+      console.log("Dati salvati con successo:", JSON.stringify(responseData));
+      // Aggiungi eventuali azioni aggiuntive dopo il salvataggio dei dati
+    } catch (error) {
+      console.error("Errore durante il salvataggio dei dati:", error);
     }
-
+  };
+  
+  
 
     // Metodo per eliminare una richiesta
-const deleteRichiesta = () => {
+ const deleteRichiesta = () => {
   // Recupera l'ID della richiesta dal localStorage
   const richiestaId = localStorage.getItem("richiesta_id");
   // Se non è presente un ID nel localStorage, non fare nulla
@@ -319,12 +499,13 @@ const deleteRichiesta = () => {
       console.error("Errore durante l'eliminazione della richiesta:", error);
     });
 };
-
+ 
 
 
 
   return (
     <Layout>
+      <Percorso/>
 
     <article className='row'>
     
@@ -333,248 +514,251 @@ const deleteRichiesta = () => {
         <div class="h1">Modifica <span class="badge bg-primary">Richiesta</span></div>
     </article>
      <p></p>
-     
-    <div className='row'>
-    
-    <div className='col-4'>
+
+     {richiesta.map((arrayInterno, outerIndex) => (
+     arrayInterno.map((item, innerIndex) => ( 
+      <div key={outerIndex}>
+
+<div  className='row'>
+
+<div className="form-group col-md-4 shadow select-wrapper">
             <div class="form-group">
-      <label for="formGroupExampleInput"></label>
-      <input type="number" class="form-control" id="formGroupExampleInput" 
-      readOnly value={numeroTicket}
-     /*  onChange={handleNumeroTicketChange} */ />
+      <label for="formGroupExampleInput">Numero Ticket</label>
+       <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
+       value= {item.numeroTicket} />
+    </div>
+    </div>
+
+       <div className="form-group col-md-8 shadow select-wrapper">
+            <div class="form-group">
+      <label for="formGroupExampleInput">Oggetto</label>
+      <input type="text" class="form-control" id="formGroupExampleInput" readOnly
+       value={item.oggetto}/>
+    </div>
     </div>
     </div>
     
-    <div className='col-8'>
-            <div class="form-group">
-      <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput"
-       readOnly value={oggetto}
-     /*   onChange={handleOggettoChange} *//>
-    </div>
-    </div>
-    </div>
     
     
     <p></p>
-    
-    
+
     <div className='row'>
     
-    <div className='col-4'>
+     <div className="form-group col-md-4 shadow select-wrapper">
             <div class="form-group">
-      <label for="formGroupExampleInput"></label>
+      <label for="formGroupExampleInput">Applicativo</label>
       <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
-      value={richiesta? richiesta.applicativo?.descApplicativo : ''}
-       /* onChange={handleApplicativoChange}/>  *//>
+      value={item.applicativo ? item.applicativo.descApplicativo : ''}/>
+    </div>
+    </div> 
+
+
+
+    
+    <div className="form-group col-md-4 shadow select-wrapper">
+    <div class="form-group">
+        <label class="active" for="dateStandard">Data Creazione</label>
+        <input type="date" id="dateStandard" name="dateStandard" readOnly value={item.dataCreazione}/>
     </div>
     </div>
     
-    <div className='col-4'>
-  <div className="form-group">
-    <label htmlFor="dateStandard"></label>
-    <input
-      type="date"
-      id="dateStandard"
-      name="dateStandard"
-      readOnly
-      //onChange={handleDataCreazioneChange}
-      value={dataCreazione}
-     
-    />
-  </div>
+    
+
+  {/*  <div className="form-group col-md-4 shadow select-wrapper">
+                 <div>Stato Richiesta CONSAP</div>
+                 <label htmlFor="statoRichiestaConsap"></label>
+                 <select
+                   id="statoRichiestaConsap"
+                   onChange={(event) => handleStatoRichiestaConsapChange(event, outerIndex, innerIndex)}
+                 >
+                   <option value="" disabled>
+                     - Seleziona Stato Richiesta CONSAP -
+                   </option>
+                   {statoRichiestaConsap.map((stato, index) => (
+                     <option
+                       key={index}
+                       value={stato.statoRichiestaConsapId}
+                        selected={
+                         stato.statoRichiestaConsapId ===
+                         statoRichiestaConsapId
+                       } 
+                     >
+                       {stato.descStatoRichiestaConsap}
+                     </option>
+                   ))}
+                 </select>
+               </div> */}
+
+               <div className="form-group col-md-4 shadow select-wrapper">
+  <label>Stato Richiesta CONSAP</label>
+  <select
+    id="statoRichiestaConsap"
+    onChange={(event) => handleStatoRichiestaConsapChange(event, outerIndex, innerIndex)}
+    value={item.statoRichiestaConsap.statoRichiestaConsapId} // Imposta il valore della combo-box con l'ID ereditato
+  >
+    <option value="" disabled>
+      - Seleziona Stato Richiesta CONSAP -
+    </option>
+    {statoRichiestaConsap.map((stato, index) => (
+      <option
+        key={index}
+        value={stato.statoRichiestaConsapId}
+      >
+        {stato.descStatoRichiestaConsap}
+      </option>
+    ))}
+  </select>
 </div>
 
-    
-    <div className='col-4'>
-            <div class="select-wrapper">
-            <label for="defaultSelect"></label>
-         <select id="defaultSelect"
-     
-      onChange={handleStatoRichiestaConsapChange}
-      value={statoRichiestaConsapId}>
-       <option  value="" disabled selected>Stato Richiesta Consap</option>
-  {statoRichiestaConsap.map((statoRichiestaConsap, statoRichiestaConsapId) => (
-  <option key={statoRichiestaConsapId} 
-  value={statoRichiestaConsap.statoRichiestaConsapId}>
-    {statoRichiestaConsap.descStatoRichiestaConsap}</option>
-          ))}
-    
-    </select>
-    
     </div>
-    </div> 
-
-
-{/* <div className="form-group col-md-3 shadow select-wrapper">
-          <div>Stato Richiesta CONSAP</div>
-          <label htmlFor="statoRichiestaConsap"></label>
-          <select
-            id="statoRichiestaConsap"
-            value={statoRichiestaConsapId}
-            onChange={handleStatoRichiestaConsapChange}
-          >
-            <option value="" disabled selected>
-              - Seleziona Stato Richiesta CONSAP -
-            </option>
-            
-            {statoRichiestaConsap.map(
-              (statoRichiestaConsap, statoRichiestaConsapId) => (
-                <option
-                  key={statoRichiestaConsapId}
-                  value={statoRichiestaConsap.statoRichiestaConsapId}
-                >
-                  {statoRichiestaConsap.descStatoRichiestaConsap}
-                </option>
-              )
-            )}
-          </select>
-        </div> */}
-    </div>
-    
-    
-    
-    
-    
+      
     <p></p>
-    
-    
-    
+
     <div className='row'>
     
-    <div className='col-4'>
-            <div class="select-wrapper">
-            <label for="defaultSelect"></label>
-         <select id="defaultSelect"
-     
-      onChange={handleStatoApprovazioneConsapChange}
-      value={statoApprovazioneConsapId}>
-       <option  value="" disabled selected>Stato Approvazione Consap</option>
-  {statoApprovazioneConsap.map((statoApprovazioneConsap, statoApprovazioneConsapId) => (
-  <option key={statoApprovazioneConsapId} 
-  value={statoApprovazioneConsap.statoApprovazioneConsapId}>
-    {statoApprovazioneConsap.descStatoApprovazioneConsap}</option>
-          ))}
-    
-    </select>
-    
-    </div>
-    </div>
-    
-    <div className='col-4'>
-            <div class="select-wrapper">
-            <label for="defaultSelect"></label>
-         <select id="defaultSelect"
-     
-      onChange={handleStatoRichiestaOsChange}
-      value={statoRichiestaOsId}>
-       <option  value="" disabled selected>Stato Richiesta OS</option>
-  {statoRichiestaOs.map((statoRichiestaOs, statoRichiestaOsId) => (
-  <option key={statoRichiestaOsId} 
-  value={statoRichiestaOs.statoRichiestaOsId}>
-    {statoRichiestaOs.descStatoRichiestaOs}</option>
-          ))}
-    
-    </select>
-    
-    </div>
-    </div> 
-    
-    <div className='col-4'>
-            <div class="select-wrapper">
-            <label for="defaultSelect"></label>
-         <select id="defaultSelect"
-     
-      onChange={handleStatoApprovazioneOsChange}
-      value={statoApprovazioneOsId}>
-       <option  value="" disabled selected>Stato Approvazione OS</option>
-  {statoApprovazioneOs.map((statoApprovazioneOs, statoApprovazioneOsId) => (
-  <option key={statoApprovazioneOsId} 
-  value={statoApprovazioneOs.statoApprovazioneOsId}>
-    {statoApprovazioneOs.descStatoApprovazioneOs}</option>
-          ))}
-    
-    </select>
-    
-    </div>
-    </div> 
-    </div>
-    
-    
-    <p></p>
-    
-    <div className='row'>
+     <div className="form-group col-md-4 shadow select-wrapper">
+                 <label>Stato Approvazione CONSAP</label>
+                 <label htmlFor="statoApprovazioneConsap"></label>
+                 <select
+                   id="statoApprovazioneConsap"
+                   onChange={(event) => handleStatoApprovazioneConsapChange(event, outerIndex, innerIndex)}
+                   value={item.statoApprovazioneConsap.statoApprovazioneConsapId} // Imposta il valore della combo-box con l'ID ereditato
+                 >
+                   <option value="" disabled>
+                     - Seleziona Stato Approvazione CONSAP -
+                   </option>
+                   {statoApprovazioneConsap.map((stato, index) => (
+                     <option
+                       key={index}
+                       value={stato.statoApprovazioneConsapId}
+                     
+                     >
+                       {stato.descStatoApprovazioneConsap}
+                     </option>
+                   ))}
+                 </select>
+               </div> 
 
-      <p></p>
+
+
     
-      <div className='col-4'>
-  <div className="form-group">
-    <label htmlFor="dateStandard"></label>
-    <input
-      type="date"
-      id="dateStandard"
-      name="dateStandard"
-      onChange={handleDataStimaFineChange}
-      value={dataStimaFine}
-     
-    />
-  </div>
-</div>
+               <div className="form-group col-md-4 shadow select-wrapper">
+                 <label>Stato Richiesta OS</label>
+                 <label htmlFor="statoRichiestaOs"></label>
+                 <select
+                   id="statoRichiestaOs"
+                   onChange={(event) => handleStatoRichiestaOsChange(event, outerIndex, innerIndex)}
+                   value={item.statoRichiestaOs.statoRichiestaOsId} // Imposta il valore della combo-box con l'ID ereditato
+                 >
+                   <option value="" disabled>
+                     - Seleziona Stato Richiesta OS -
+                   </option>
+                   {statoRichiestaOs.map((stato, index) => (
+                     <option
+                       key={index}
+                       value={stato.statoRichiestaOsId}
+                     
+                     >
+                       {stato.descStatoRichiestaOs}
+                     </option>
+                   ))}
+                 </select>
+               </div>
     
-    <div className='col-4'>
-            <div class="form-group">
-      <label for="importo"></label>
-      <input type="text" class="form-control" id="importo"
-      onChange={handleImportoChange}
-       value={importo}/>
+               <div className="form-group col-md-4 shadow select-wrapper">
+                 <label>Stato Approvazione OS</label>
+                 <label htmlFor="statoApprovazioneOs"></label>
+                 <select
+                   id="statoApprovazioneOs"
+                   onChange={(event) => handleStatoApprovazioneOsChange(event, outerIndex, innerIndex)}
+                   value={item.statoApprovazioneOs.statoApprovazioneOsId} // Imposta il valore della combo-box con l'ID ereditato
+                 >
+                   <option value="" disabled>
+                     - Seleziona Stato Approvazione OS -
+                   </option>
+                   {statoApprovazioneOs.map((stato, index) => (
+                     <option
+                       key={index}
+                       value={stato.statoApprovazioneOsId}
+                      
+                     >
+                       {stato.descStatoApprovazioneOs}
+                     </option>
+                   ))}
+                 </select>
+               </div>
     </div>
-    </div>
-    
-    <div className='col-4'>
-            <div class="select-wrapper">
-            <label for="defaultSelect"></label>
-         <select id="defaultSelect"
-     
-      onChange={handleCommessaOsChange}
-      value={commessaOsId}>
-       <option  value="" disabled selected>Commessa OS</option>
-  {commessaOs.map((commessaOs, commessaOsId) => (
-  <option key={commessaOsId} 
-  value={commessaOs.commessaOsId}>
-    {commessaOs.numeroCommessa}</option>
-          ))}
-    
-    </select>
-    
-    </div>
-    </div> 
-    </div>
-    
+
     <p></p>
-    
+
     <div className='row'>
     
-    <div className='col-4'>
+    <div className="form-group col-md-4 shadow select-wrapper">
             <div class="form-group">
-      <label for="formGroupExampleInput"></label>
-      <input type="text" class="form-control" id="formGroupExampleInput" placeholder='Utente Modifica'
-      value={utenteModifica}
-      onChange={handleUtenteModificaChange}/>
-
+            <label htmlFor={`dataStimaFine-${outerIndex}-${innerIndex}`}>Data Stima Fine</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id={`dataStimaFine-${outerIndex}-${innerIndex}`}
+                  value={item.dataStimaFinale || ''}
+                  onChange={(event) => handleDataStimaFineChange(event, outerIndex, innerIndex)}
+                />
     </div>
     </div>
     
-    <div className='col-4'>
-            <div class="form-group">
-      <label for="formGroupExampleInput"></label>
-      <input type="date" class="form-control" id="formGroupExampleInput" placeholder='Data Modifica'
-      value={dataModifica} onChange={handleDataModificaChange}/>
+    <div className="form-group col-md-4 shadow select-wrapper">
+    <div class="form-group">
+        <label class="active" for="dateStandard">Importo</label>
+        <input
+            type="number"
+            id={`importo-${outerIndex}-${innerIndex}`}
+            name={`importo-${outerIndex}-${innerIndex}`}
+            value={item.importo !== null ? item.importo : ''}
+            onChange={(event) => handleImportoChange(event, outerIndex, innerIndex)}
+          />
     </div>
     </div>
+    
+    <div className="form-group col-md-4 shadow select-wrapper">
+                 <label >COMMESSA OS</label>
+                 <label htmlFor="commessaOs"></label>
+                 <select
+                   id="commessaOs"
+                   onChange={(event) => handleCommessaOsChange(event, outerIndex, innerIndex)}
+                   value={item.commessaOs.commessaOsId} // Imposta il valore della combo-box con l'ID ereditato
+                 >
+                   <option value="" disabled>
+                     - Seleziona COMMESSA OS -
+                   </option>
+                   {commessaOs.map((stato, index) => (
+                     <option
+                       key={index}
+                       value={stato.commessaOsId}
+                       
+                     >
+                       {stato.codiceCommessaOs}
+                     </option>
+                   ))}
+                 </select>
+               </div>
     </div>
+
+
+<p></p>
+
+      </div>
+    )))
+  )}
+
+    
+
+     
+  
+
     
     <p></p>
-
+    
+   
 
     <div className='row'>
     <div className='col-3'>
@@ -585,8 +769,8 @@ const deleteRichiesta = () => {
 
          <div class="py-1">
         <div class="btn-example">
-          {/* Abilita/disabilita il pulsante in base allo stato di modificaAbilitata */}
-          {bloccoModifica ? (
+         {/*  {/* Abilita/disabilita il pulsante in base allo stato di modificaAbilitata */}
+         {/*  {bloccoModifica ? (
             <Link to="/elenco" style={{ textDecoration: "none" }}>
               <button
                 type="button"
@@ -604,22 +788,24 @@ const deleteRichiesta = () => {
             <button type="button" className="btn btn-outline-primary" disabled>
               Modifica
             </button>
-          )}
-        <button type="button" className="btn btn-outline-success" onClick={()=> window.location.reload()}>
+          )}  */}
+            
+
+
+        <button type="button" className="btn btn-outline-primary"  onClick={()=> window.location.reload()}>
               Ripristina
             </button>
             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal2"
           onClick={handleShowCancella}>Elimina</button>
            {/* <button type="button" class="btn btn-outline-primary" onClick={() => window.location.href = "../elenco"}>Elenco</button> */}
-        </div>
-        
-          
-      </div>
+           <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#myModal"
+         onClick={handleShowModifica}>Modifica</button> 
+     
+           </div>
+        </div> 
 
 
-
-        {/* <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#myModal"
-         onClick={handleShowModifica}>Modifica</button> */}
+      
 
 
          
@@ -643,8 +829,8 @@ const deleteRichiesta = () => {
             <button class="btn btn-outline-primary btn-sm" type="button" data-bs-dismiss="modal" onClick={handleCloseModifica}
              >Annulla</button>
                <button class="btn btn-primary btn-sm" type="button"onClick={()=>{
-              salvaRichiesta();
-              window.location.href = "/elenco";
+               salvaRichiesta() ;
+              //window.location.href = "/elenco";
                 } } >Salva</button>
             </div>
           </div>
@@ -667,7 +853,7 @@ const deleteRichiesta = () => {
              >Annulla</button>
                <button class="btn btn-primary btn-sm" type="button" onClick={() => {
                 // Esegui la funzione di eliminazione delle richieste
-                 deleteRichiesta();
+                  deleteRichiesta() ;
                 // Reindirizza l'utente alla pagina "Elenco"
                 window.location.href = "../elenco";
                 }} >Elimina</button>
@@ -690,28 +876,6 @@ const deleteRichiesta = () => {
       </div>
 
 </div>
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
         </Layout>

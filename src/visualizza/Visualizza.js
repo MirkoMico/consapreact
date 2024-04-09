@@ -164,7 +164,7 @@ function Visualizza ()  {
             <div class="form-group">
       <label for="formGroupExampleInput"></label>
       <input type="text" class="form-control" id="formGroupExampleInput" readOnly 
-      value={item.statoRichiestaConsap ? item.statoRichiestaConsap.descStatoRichiestaConsap : ''}/>
+      value={item.statoApprovazioneConsap ? item.statoApprovazioneConsap.descStatoApprovazioneConsap : ''}/>
     </div>
     </div>
     

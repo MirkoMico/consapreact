@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Layout from '../componenti/Layout'
 import Filtri from '../componenti/Filtri';
+import Spinner from '../componenti/Spinner';
 import icona from 'bootstrap-italia/dist/svg/sprites.svg'
+import Page from '../componenti/Page';
 
 function Elenco  ()  {
 /* 
@@ -135,6 +137,8 @@ function Elenco  ()  {
   return (
     
     <Layout>
+      <Spinner>
+       
     
 
 <article  >
@@ -255,6 +259,8 @@ aria-current={currentPage === totalPages - 1 ? 'page' : null}>
  
 
      </nav>*/}
+
+</Spinner>
       
     </Layout>
   )
