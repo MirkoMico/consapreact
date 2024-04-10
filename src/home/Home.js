@@ -3,6 +3,8 @@ import icona from 'bootstrap-italia/dist/svg/sprites.svg'
 import './Home.css'
 import { VideoPlayer } from 'bootstrap-italia/dist/js/bootstrap-italia.bundle.min'
 import Carosello from '../componenti/Carosello'
+import Footers from '../componenti/Footers'
+import ImmagineHome from '../componenti/ImmagineHome'
 
 
 //import './Home.css';
@@ -10,7 +12,7 @@ import Carosello from '../componenti/Carosello'
 const Home =  ()=>  {
   return (
 
-    <div>
+     <div>
     <nav class="navbar navbar-expand-lg has-megamenu" aria-label="Menu principale">
   <button type="button" aria-label="Mostra o nascondi il menu" class="custom-navbar-toggler" aria-controls="menu" aria-expanded="false" data-bs-toggle="navbarcollapsible" data-bs-target="#navbar-E">
       <span>
@@ -25,6 +27,9 @@ const Home =  ()=>  {
       </button>
     </div>
 
+
+    
+
    
 
 
@@ -32,7 +37,7 @@ const Home =  ()=>  {
       <ul class="navbar-nav">
         <li class="nav-item dropdown megamenu">
           <button type="button" class="nav-link dropdown-toggle px-lg-2 px-xl-3" data-bs-toggle="dropdown" aria-expanded="false" id="megamenu-base-E" data-focus-mouse="false">
-              <span>Consap Menù</span><svg role="img" class="icon icon-xs ms-1"><use href={`${icona}#it-expand`}></use></svg>
+              <span>CONSAP</span><svg role="img" class="icon icon-xs ms-1"><use href={`${icona}#it-expand`}></use></svg>
           </button>
           <div class="dropdown-menu shadow-lg" role="region" aria-labelledby="megamenu-base-E">
             <div class="megamenu pb-5 pt-3 py-lg-0">
@@ -87,9 +92,13 @@ const Home =  ()=>  {
 
 
   <div class="it-access-top-wrapper">
-              <a class="btn btn-primary btn-sm" href="/login">Accedi</a>
+              <a class="btn btn-success btn-sm" href="/login">Accedi</a>
             </div>
-</nav>
+</nav>  
+
+
+
+
 
 
 {/* carosello */}
@@ -97,7 +106,13 @@ const Home =  ()=>  {
 
 
 <Carosello/>
+<p></p>
+<ImmagineHome/>
+
+<Footers/>
 </div>
+
+
 
 
 

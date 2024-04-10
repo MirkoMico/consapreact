@@ -1,14 +1,44 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import icona from 'bootstrap-italia/dist/svg/sprites.svg'
+import '../index.css'
 
 const Navbars = () => {
+
+
+  const [showLogout, setShowLogout] = useState(false);
+   const myInputLogout = useRef(null);
+ 
+   const handleCloseLogout = () => setShowLogout(false);
+   const handleShowLogout = () => setShowLogout(true);
+ 
+   // Questa funzione viene chiamata ogni volta che lo stato 'show' cambia
+   useEffect(() => {
+     if (showLogout) {
+       myInputLogout.current.focus();
+     }
+   }, [showLogout]);
+
+
+   const handleLogout = () => {
+    // Rimuovi il token dal localStorage
+    localStorage.removeItem('token');
+    // Esegui altre azioni necessarie per il logout, come reindirizzare l'utente alla pagina di login
+    // window.location.href = '/login'; // Ad esempio, reindirizza l'utente alla pagina di login
+  };
+
+
+
+
+
+
+
   return (
     
 
 
 
  
-<nav class="navbar navbar-expand-lg has-megamenu" aria-label="Menu principale">
+<nav class="navbar navbar-expand-lg has-megamenu colore" aria-label="Menu principale">
   <button type="button" aria-label="Mostra o nascondi il menu" class="custom-navbar-toggler" aria-controls="menu" aria-expanded="false" data-bs-toggle="navbarcollapsible" data-bs-target="#navbar-A">
       <span>
         <svg role="img" class="icon"><use href={`${icona}#it-burger`}></use></svg>
@@ -21,6 +51,12 @@ const Navbars = () => {
         <span><svg role="img" class="icon"><use href={`${icona}#it-close-big`}></use></svg></span>
       </button>
     </div>
+
+
+
+
+
+
     <div class="menu-wrapper justify-content-lg-between">
       <ul class="navbar-nav">
         
@@ -198,9 +234,45 @@ const Navbars = () => {
     </div>
   </div>
   <div class="it-access-top-wrapper">
-              <a class="btn btn-primary btn-sm" href="#">Logout</a>
+              {/* <a class="btn btn-primary btn-sm" href="#">Logout</a> */}
+              <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#myModal"
+         onClick={handleShowLogout}>Logout</button> 
             </div>
+
+
+
+
+
+            <div className="modal fade" id="myModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">Sei sicuro di voler uscire dalla tua area riservata?</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleCloseLogout}></button>
+            </div>
+            <div className="modal-body">
+              <input ref={myInputLogout} type="text" />
+            </div>
+            <div className="modal-footer">
+            <button class="btn btn-outline-primary btn-sm" type="button" data-bs-dismiss="modal" onClick={handleCloseLogout}
+             >No</button>
+               <button class="btn btn-successs btn-sm" type="button" onClick={()=>{
+               handleLogout() ;
+              window.location.href = "/";
+                } }
+                 >Si</button>
+            </div>
+          </div>
+        </div>
+      </div>
 </nav>
+
+
+
+
+
+
+
   )
 }
 

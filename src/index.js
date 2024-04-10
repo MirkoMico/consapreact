@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+
 
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap-italia/dist/css/bootstrap-italia.min.css';
 import '../node_modules/bootstrap-italia/dist/js/bootstrap-italia.bundle.min.js';
 import { loadFonts } from 'bootstrap-italia'
+import './index.css';
 
 
 

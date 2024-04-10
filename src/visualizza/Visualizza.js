@@ -1,37 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import Layout from '../componenti/Layout'
+import Percorso from './Percorso';
 
 function Visualizza ()  {
 
     
 
- /*   useEffect(() => {
-    // Recupera l'ID della richiesta dal localStorage
-    const richiestaId = localStorage.getItem('richiesta_id');
-
-    // Se non è presente un ID nel localStorage, non fare nulla
-    if (!richiestaId) return;
-
-    // Effettua una richiesta GET al server per recuperare la richiesta con l'ID specificato
-    fetch(`http://localhost:8080/richiesta/${richiestaId}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Errore durante il recupero della richiesta');
-        }
-        return response.json();
-      })
-      .then(data => {
-        // Imposta lo stato con i dati della richiesta ottenuti dal server
-        setRichiesta(data);
-        console.log(data); // Stampa i dati acquisiti dal server
-      })
-      .catch(error => {
-        console.error('Errore durante il recupero della richiesta:', error);
-      });
-  }, []);  */
 
 
   const [richiesta, setRichiesta] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);// Current page
+  const [pageSize, setPageSize] = useState(10); // Number of items per page
 
   useEffect(() => {
       // Recupera l'ID della richiesta dal localStorage
@@ -41,8 +20,18 @@ function Visualizza ()  {
       if (!richiestaId) return;
     const fetchAndPopulateData = async () => {
       try {
+
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          // Gestisci il caso in cui il token non sia presente nel localStorage
+          console.error('Token non trovato nel localStorage');
+          return;
+        }
+
+        
         const urls = [
-          "http://localhost:8080/richiesta",
+          `http://localhost:8080/richiesta/${currentPage}-${pageSize}`,
         ];
   
         const requests = urls.map(async (url) => {
@@ -50,6 +39,7 @@ function Visualizza ()  {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}` // Include il token nell'header Authorization
             },
             body: JSON.stringify({
               erroreDTO: null,
@@ -94,6 +84,8 @@ function Visualizza ()  {
 
   return (
     <Layout>
+
+<Percorso/>
 
  
 

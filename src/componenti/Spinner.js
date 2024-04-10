@@ -9,7 +9,7 @@ const Spinner = ({ children }) => {
       // Mostra il contenuto dopo 3 secondi
       setTimeout(() => {
         setShowContent(true);
-      }, 3000); // 3000 millisecondi = 3 secondi
+      }, 2300); // 3000 millisecondi = 3 secondi
     };
 
     // Chiama la funzione per attivare il progress spinner

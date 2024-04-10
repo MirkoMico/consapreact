@@ -41,11 +41,29 @@ function Elenco  ()  {
     fetchData();
   }, []); */
 
+
+
+  const [richieste, setRichieste] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);// Current page
+    const [pageSize, setPageSize] = useState(10); // Number of items per page
+    const [totalPages, setTotalPages] = useState(4);
+
   useEffect(() => {
     const fetchAndPopulateData = async () => {
       try {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+          // Gestisci il caso in cui il token non sia presente nel localStorage
+          console.error('Token non trovato nel localStorage');
+          return;
+        }
+
+
+
+
         const urls = [
-          "http://localhost:8080/richiesta",
+          `http://localhost:8080/richiesta/${currentPage}-${pageSize}`,
         ];
   
         const requests = urls.map(async (url) => {
@@ -53,6 +71,7 @@ function Elenco  ()  {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}` // Include il token nell'header Authorization
             },
             body: JSON.stringify({
               erroreDTO: null,
@@ -73,9 +92,16 @@ function Elenco  ()  {
               elenco: null,
             }),
           });
+  
+          if (response.ok) {
           const data = await response.json();
+          const totalItems = data.length; // Assumi che la risposta contenga un array di elementi
+        const totalPages = Math.ceil(totalItems / pageSize);
+        setTotalPages(totalPages);
+        console.log("Total Pages:", totalPages);
+
           return data.elenco;
-        });
+       } });
   
         const richiestaData = await Promise.all(requests);
         setRichiesta(richiestaData);
@@ -87,42 +113,17 @@ function Elenco  ()  {
     };
   
     fetchAndPopulateData();
-  }, []);
+  }, [currentPage, pageSize]);
   
+ // Funzione per gestire il cambio di pagina
+ const handlePageChange = (newPage) => {
+  
+  setCurrentPage(newPage);
+ }
 
 
+ 
 
-   /* const [richieste, setRichieste] = useState([]);
-    const [currentPage, setCurrentPage] = useState(0);// Current page
-    const [pageSize, setPageSize] = useState(2); // Number of items per page
-    const [totalPages, setTotalPages] = useState(0);
-
-    useEffect(() => {
-        // Fetch data from your API endpoint
-        async function fetchRichieste() {
-            try {
-                const response = await fetch(`http://localhost:8080/richiesta/page?page=${currentPage}&size=${pageSize}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    setRichieste(data.content);
-                    setTotalPages(data.totalPages);
-                } else {
-                    console.error('Error fetching data');
-                }
-            } catch (error) {
-                console.error('Error fetching data', error);
-            }
-        }
-
-        fetchRichieste();
-    }, [currentPage, pageSize]);
-
-     // Funzione per gestire il cambio di pagina
-     const handlePageChange = (newPage) => {
-      setCurrentPage(newPage);
-  };
-
- */
 
    const prendiId = (id)=>{
     localStorage.setItem("richiesta_id",id)
@@ -195,20 +196,23 @@ function Elenco  ()  {
 </table>
 
 
-{/* 
+
 <nav class="pagination-wrapper justify-content-center" aria-label="Navigazione centrata">
   <ul class="pagination">
-    <li class={`page-item ${currentPage === 0 ? 'disabled' : ''}`}>
+    <li class={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
       <a class="page-link" href="#"   tabindex="-1"  aria-hidden="true" onClick={() => handlePageChange(currentPage - 1)}>
         <svg class="icon icon-primary"><use href={`${icona}#it-chevron-left`}></use></svg>
         <span class="visually-hidden">Pagina precedente</span>
       </a>
     </li>
 
-    <li class="page-item"><a class="page-link" href="#" onClick={() => setCurrentPage(0)} 
-    aria-current={currentPage === 0 ? 'page' : null}>Prima</a></li>
+   
+    
 
-<li class="page-item"><span class="page-link">...</span></li>
+    <li class="page-item"><a class="page-link" href="#" onClick={() => setCurrentPage(1)} 
+    aria-current={currentPage === 1 ? 'page' : null}>Prima</a></li>
+
+{/* <li class="page-item"><span class="page-link">...</span></li>
     
 
      {Array.from({ length: totalPages - 2 }, (_, index) => (
@@ -220,19 +224,26 @@ function Elenco  ()  {
 
 
 
-<li class="page-item"><span class="page-link">...</span></li>
+<li class="page-item"><span class="page-link">...</span></li> */}
 
-<li class="page-item"><a class="page-link" href="#" onClick={() => setCurrentPage(totalPages - 1)}
-aria-current={currentPage === totalPages - 1 ? 'page' : null}>
-      Ultima</a></li>
+<li class="page-item"><span class="page-link">{currentPage}</span></li>
 
+  <li class="page-item"><a class="page-link" href="#" onClick={() => setCurrentPage(4 )}
+aria-current={currentPage === totalPages   ? 'page' : null}>
+      Ultima</a></li> 
+ 
+     
+ 
 
-    <li class={`page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
+     <li class={`page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`}>
       <a class="page-link" href="#" onClick={() => handlePageChange(currentPage + 1)}>
         <span class="visually-hidden">Pagina successiva</span>
         <svg class="icon icon-primary"><use href={`${icona}#it-chevron-right`}></use></svg>
       </a>
-    </li>
+    </li> 
+
+
+
 
     
 
@@ -258,7 +269,7 @@ aria-current={currentPage === totalPages - 1 ? 'page' : null}>
   </div>
  
 
-     </nav>*/}
+     </nav>
 
 </Spinner>
       

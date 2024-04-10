@@ -3,14 +3,17 @@ import Layout from '../componenti/Layout'
 import { Link } from 'react-router-dom';
 import ServiziGet from '../componenti/ServiziGet';
 import Percorso from './Percorso';
+import ComboBox from '../componenti/ComboBox';
 
 
 
 function Modifica ()  {
 
   const[richiesta, setRichiesta] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);// Current page
+  const [pageSize, setPageSize] = useState(10); // Number of items per page
   
-   // Numero Ticket
+    // Numero Ticket
  const [numeroTicket, setNumeroTicket] = useState("");
 
 
@@ -219,8 +222,20 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
         if (!richiestaId) return;
       const fetchAndPopulateData = async () => {
         try {
+
+
+          const token = localStorage.getItem('token');
+
+          if (!token) {
+            // Gestisci il caso in cui il token non sia presente nel localStorage
+            console.error('Token non trovato nel localStorage');
+            return;
+          }
+
+
+
           const urls = [
-            "http://localhost:8080/richiesta",
+            `http://localhost:8080/richiesta/${currentPage}-${pageSize}`,
           ];
     
           const requests = urls.map(async (url) => {
@@ -228,6 +243,7 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Include il token nell'header Authorization
               },
               body: JSON.stringify({
                 erroreDTO: null,
@@ -282,9 +298,18 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
 
 
 
-    useEffect(() => {
+     useEffect(() => {
       const fetchAndPopulateDataComboBox = async () => {
         try {
+          const token = localStorage.getItem('token');
+
+          if (!token) {
+            // Gestisci il caso in cui il token non sia presente nel localStorage
+            console.error('Token non trovato nel localStorage');
+            return;
+          }
+
+
           const urls = [
             "http://localhost:8080/applicativo",
             "http://localhost:8080/statoRichiestaConsap",
@@ -299,6 +324,7 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Include il token nell'header Authorization
               },
               body: JSON.stringify({
                 erroreDTO: null,
@@ -343,7 +369,7 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
     
       fetchAndPopulateDataComboBox();
     }, []);
-
+ 
 
 
 
@@ -400,6 +426,17 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
     // console.log(JSON.stringify(richiestaData) + "richiestaData ");
 
     try {
+
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        // Gestisci il caso in cui il token non sia presente nel localStorage
+        console.error('Token non trovato nel localStorage');
+        return;
+      }
+
+
+
       // Converti i valori stringa in numeri
        const parsedNumeroTicket = parseInt(richiestaData.numeroTicket);
       console.log(parsedNumeroTicket + "numero ticket");
@@ -459,6 +496,7 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Include il token nell'header Authorization
         },
         body: JSON.stringify(data),
       });
@@ -515,7 +553,7 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
     </article>
      <p></p>
 
-     {richiesta.map((arrayInterno, outerIndex) => (
+      {richiesta.map((arrayInterno, outerIndex) => (
      arrayInterno.map((item, innerIndex) => ( 
       <div key={outerIndex}>
 
@@ -564,30 +602,7 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
     
     
 
-  {/*  <div className="form-group col-md-4 shadow select-wrapper">
-                 <div>Stato Richiesta CONSAP</div>
-                 <label htmlFor="statoRichiestaConsap"></label>
-                 <select
-                   id="statoRichiestaConsap"
-                   onChange={(event) => handleStatoRichiestaConsapChange(event, outerIndex, innerIndex)}
-                 >
-                   <option value="" disabled>
-                     - Seleziona Stato Richiesta CONSAP -
-                   </option>
-                   {statoRichiestaConsap.map((stato, index) => (
-                     <option
-                       key={index}
-                       value={stato.statoRichiestaConsapId}
-                        selected={
-                         stato.statoRichiestaConsapId ===
-                         statoRichiestaConsapId
-                       } 
-                     >
-                       {stato.descStatoRichiestaConsap}
-                     </option>
-                   ))}
-                 </select>
-               </div> */}
+ 
 
                <div className="form-group col-md-4 shadow select-wrapper">
   <label>Stato Richiesta CONSAP</label>
@@ -748,12 +763,11 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
 
       </div>
     )))
-  )}
+  )} 
 
     
 
-     
-  
+ 
 
     
     <p></p>
@@ -792,13 +806,14 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
             
 
 
-        <button type="button" className="btn btn-outline-primary"  onClick={()=> window.location.reload()}>
+        <button type="button" className="btn btn-outline-success"  onClick={()=> window.location.reload()}>
               Ripristina
             </button>
-            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal2"
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#myModal2"
           onClick={handleShowCancella}>Elimina</button>
            {/* <button type="button" class="btn btn-outline-primary" onClick={() => window.location.href = "../elenco"}>Elenco</button> */}
-           <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#myModal"
+           
+           <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#myModalModifica"
          onClick={handleShowModifica}>Modifica</button> 
      
            </div>
@@ -815,7 +830,7 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
 
  
 
-  <div className="modal fade" id="myModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal fade" id="myModalModifica" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -828,9 +843,9 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
             <div className="modal-footer">
             <button class="btn btn-outline-primary btn-sm" type="button" data-bs-dismiss="modal" onClick={handleCloseModifica}
              >Annulla</button>
-               <button class="btn btn-primary btn-sm" type="button"onClick={()=>{
+               <button class="btn btn-success btn-sm" type="button"onClick={()=>{
                salvaRichiesta() ;
-              //window.location.href = "/elenco";
+              window.location.href = "/elenco";
                 } } >Salva</button>
             </div>
           </div>
@@ -851,7 +866,7 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
             <div className="modal-footer">
             <button class="btn btn-outline-primary btn-sm" type="button" data-bs-dismiss="modal" onClick={handleCloseCancella}
              >Annulla</button>
-               <button class="btn btn-primary btn-sm" type="button" onClick={() => {
+               <button class="btn btn-success btn-sm" type="button" onClick={() => {
                 // Esegui la funzione di eliminazione delle richieste
                   deleteRichiesta() ;
                 // Reindirizza l'utente alla pagina "Elenco"

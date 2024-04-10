@@ -4,3 +4,12 @@
     align-items: center;
     height: 100%; /* Questo assicura che il contenitore occupi l'intera altezza del suo contenitore genitore */
 }
+
+.contenitore {
+    max-width: 1140px; /* Larghezza massima del contenitore */
+    margin-right: auto; /* Margini laterali automatici per centrare il contenuto */
+    margin-left: auto;
+    padding-right: 15px; /* Padding destro */
+    padding-left: 15px; /* Padding sinistro */
+}
+

@@ -116,7 +116,7 @@ function Inserimento  ()  {
 
 
 
- useEffect(() => {
+ /* useEffect(() => {
   const fetchAndPopulateData = async () => {
     try {
       const urls = [
@@ -176,10 +176,97 @@ function Inserimento  ()  {
   fetchAndPopulateData();
 }, []);
 
+ */
+
+useEffect(() => {
+  const fetchAndPopulateData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        // Gestisci il caso in cui il token non sia presente nel localStorage
+        console.error('Token non trovato nel localStorage');
+        return;
+      }
+
+      const urls = [
+        "http://localhost:8080/applicativo",
+        "http://localhost:8080/statoRichiestaConsap",
+        "http://localhost:8080/approvazioneConsap",
+        "http://localhost:8080/statoRichiestaOs",
+        "http://localhost:8080/statoApprovazioneOs",
+        "http://localhost:8080/commessaOs",
+      ];
+
+      const requests = urls.map(async (url) => {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}` // Include il token nell'header Authorization
+          },
+          body: JSON.stringify({
+            erroreDTO: null,
+            filtri: {
+              id: null,
+              descrizione: null,
+            },
+            elenco: null,
+          }),
+        });
+        const data = await response.json();
+        return data.elenco;
+      });
+
+      const [
+        applicativoData,
+        statoRichiestaConsapData,
+        statoApprovazioneConsapData,
+        statoRichiestaOsData,
+        statoApprovazioneOsData,
+        commessaOsData,
+      ] = await Promise.all(requests);
+
+      setApplicativo(applicativoData);
+      setStatoRichiestaConsap(statoRichiestaConsapData);
+      setStatoApprovazioneConsap(statoApprovazioneConsapData);
+      setStatoRichiestaOs(statoRichiestaOsData);
+      setStatoApprovazioneOs(statoApprovazioneOsData);
+      setCommessaOs(commessaOsData);
+      console.log("Applicativo:", applicativoData);
+      console.log("Stato Richiesta Consap:", statoRichiestaConsapData);
+      console.log("Stato Approvazione Consap:", statoApprovazioneConsapData);
+      console.log("Stato Richiesta Os:", statoRichiestaOsData);
+      console.log("Stato Approvazione Os:", statoApprovazioneOsData);
+      console.log("Commessa Os:", commessaOsData);
+    } catch (error) {
+      console.error("Errore durante il recupero dei dati:", error);
+    }
+  };
+
+  fetchAndPopulateData();
+}, []);
+
+
+
+
 
 
 const salvaRichiesta = async () => {
   try {
+
+
+    const token = localStorage.getItem('token');
+
+      if (!token) {
+        // Gestisci il caso in cui il token non sia presente nel localStorage
+        console.error('Token non trovato nel localStorage');
+        return;
+      }
+
+
+
+
     // Converti i valori stringa in numeri
     const parsedNumeroTicket = parseInt(numeroTicket);
     const parsedApplicativoId = parseInt(applicativoId);
@@ -231,6 +318,7 @@ const salvaRichiesta = async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // Include il token nell'header Authorization
       },
       body: JSON.stringify(data),
     });
