@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './Filtri.css'
 import icona from 'bootstrap-italia/dist/svg/sprites.svg'
+import Elenco from '../elenco/Elenco'
 
 const Filtri = () => {
 
@@ -64,6 +65,13 @@ const Filtri = () => {
  useEffect(() => {
   const fetchAndPopulateData = async () => {
     try {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        // Gestisci il caso in cui il token non sia presente nel localStorage
+        console.error('Token non trovato nel localStorage');
+        return;
+      }
       const urls = [
         "http://localhost:8080/applicativo",
         "http://localhost:8080/statoRichiestaConsap",
@@ -78,6 +86,7 @@ const Filtri = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}` // Include il token nell'header Authorization
           },
           body: JSON.stringify({
             erroreDTO: null,
@@ -145,34 +154,77 @@ useEffect(() => {
   statoRichiestaOsId, statoApprovazioneConsapId, statoApprovazioneOsId]); // Aggiungi numeroTicket come dipendenza dell'effetto per eseguirlo ogni volta che il valore cambia
 
 
+  const [richiesta, setRichiesta] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);// Current page
+  const [pageSize, setPageSize] = useState(10); // Number of items per page
+  const [totalPages, setTotalPages] = useState(4);
 
+  const handleFiltraClick = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('Token non trovato nel localStorage');
+        return;
+      }
+      //const numeroTicketValue = 88888;
 
+      const response = await fetch(`http://localhost:8080/richiesta/${currentPage}-${pageSize}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          erroreDTO: null,
+          filtri: {
+            "id": null,
+            "numeroTicket": numeroTicket,
+            "applicativo": {
+              "applicativoId": applicativoId
+            },
+            "oggetto": oggetto,
+            "statoRichiestaConsap":  {
+              "statoRichiestaConsapId": statoRichiestaConsapId},
+            "dataCreazione": null,
+            "statoApprovazioneConsap":{
+              "statoApprovazioneConsapId": statoApprovazioneConsapId
+            } ,
+            "statoApprovazioneOs": {
+              "statoApprovazioneOsId": statoApprovazioneOsId},
+            "statoRichiestaOs": {
+              "statoRichiestaOsId": statoRichiestaOsId},
+            "dataStimaFinale": null,
+            "importo": null,
+            "commessaOsId": null
+          },
+          elenco: null,
+        }),
+      });
 
-const handleFiltraClick = () => {
-  // La logica di filtraggio qui
-  console.log("Numero Ticket:", numeroTicket);
-  console.log("Applicativo ID:", applicativoId);
-  console.log("Oggetto:", oggetto);
-  // Aggiungi altre logiche di filtro se necessario
-}
+      if (response.ok) {
+        const data = await response.json();
+         // Aggiorna lo stato richiesta con i dati filtrati
+      setRichiesta(data.elenco);
+      // Puoi anche aggiornare eventuali altri stati necessari per la paginazione, ad esempio il numero totale di pagine
+      // e altre informazioni relative alla paginazione.
+        const totalItems = data.length;
+        const totalPages = Math.ceil(totalItems / pageSize);
+        setTotalPages(totalPages);
+        console.log(statoRichiestaConsapId+ "stato richiesta consap")
+        
+        console.log("RichiestaData:", data.elenco);
+      
+      } else {
+        console.error('Errore durante il recupero dei dati delle richieste:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Errore durante il recupero dei dati delle richieste:', error);
+    }
+  };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  const handleClick = () => {
+    handleFiltraClick();
+  };
 
 
 
@@ -302,7 +354,16 @@ const handleFiltraClick = () => {
    
 
 
-  </div>
+ 
+{/* Componente per visualizzare l'elenco filtrato */}
+{/* <Elenco richiesta={setRichiesta} /> */}
+
+
+
+
+</div>
+
+
   )
 }
 

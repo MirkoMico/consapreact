@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react'
 import Layout from '../componenti/Layout'
 import '../inserimento/Inserimento.css'
 import axios from 'axios'
+import Page from '../componenti/Page'
 
 function Inserimento  ()  {
 
@@ -347,51 +348,6 @@ const salvaRichiesta = async () => {
 
 
 
- /* const salvaRichiesta = () => {
-  // Creazione dell'oggetto con i campi da inviare al server
-  const data = {
-    numeroTicket,
-    oggetto,
-    applicativo:{applicativoId},
-    dataCreazione,
-    statoRichiestaConsap:{statoRichiestaConsapId},
-    statoApprovazioneConsap:{statoApprovazioneConsapId},
-    statoRichiestaOs:{statoRichiestaOsId},
-    statoApprovazioneOs:{statoApprovazioneOsId},
-    dataStimaFine,
-    commessaOs:{commessaOsId},
-    importo,
-   // dataInserimento,
-   // utenteInserimento
-  };
-  console.log(data +"data")
-  // Effettua la richiesta POST al server
-  fetch("http://localhost:8080/richiesta/new", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Errore durante il salvataggio dei dati");
-      }
-      return response.json();
-    })
-    .then((responseData) => {
-      console.log("Dati salvati con successo:", responseData);
-      // Aggiungi eventuali azioni aggiuntive dopo il salvataggio dei dati
-    })
-    .catch((error) => {
-      console.error("Errore durante il salvataggio dei dati:", error);
-    });
-
-
-
-  }; */
-
-
   
   
 
@@ -404,6 +360,13 @@ const salvaRichiesta = async () => {
 
   return (
     <Layout>
+
+      
+{/* <div class="it-hero-wrapper">
+  <div class="img-responsive-wrapper"></div>
+  <div class="content-wrapper">
+
+      <Page/> */}
 
 <article className='row'>
 
@@ -440,7 +403,7 @@ const salvaRichiesta = async () => {
 <div className='row'>
 
 
-<div className='col-4'>
+  <div className='col-4'>     {/*  per far visualizzare la combo box completa */}
 <div class="select-wrapper">
   <label for="defaultSelect"></label>
   <select id="applicativoId" 
@@ -452,7 +415,11 @@ const salvaRichiesta = async () => {
         ))}
   </select>
 </div>
-</div>
+</div>  
+
+
+
+
 
 <div className='col-4'>
 <div class="form-group">
@@ -468,14 +435,14 @@ const salvaRichiesta = async () => {
          <label htmlFor="statoRichiestaConsap"></label>
          <select id="statoRichiestaConsap" value={statoRichiestaConsapId} onChange={handleStatoRichiestaConsapChange}>
          <option value="" disabled selected>- Seleziona Stato Richiesta Consap -</option>
-           {statoRichiestaConsap.map((statoRichiestaConsap, statoRichiestaConsapId) => (
+           {statoRichiestaConsap.length > 0 && (
              <option
-               key={statoRichiestaConsapId}
-               value={statoRichiestaConsap.statoRichiestaConsapId}
+               key={statoRichiestaConsap[0].statoRichiestaConsapId}      /* per visualizzare solo il primo valore */
+               value={statoRichiestaConsap[0].statoRichiestaConsapId}
              >
-               {statoRichiestaConsap.descStatoRichiestaConsap}
+               {statoRichiestaConsap[0].descStatoRichiestaConsap}
              </option>
-           ))}
+           )}
          </select>
        </div>
        </div>
@@ -495,14 +462,14 @@ const salvaRichiesta = async () => {
   <select  id="statoApprovazioneConsapId"
    placeholder='Stato Approvazione Consap'value={statoApprovazioneConsapId} onChange={handleStatoApprovazioneConsapChange}>
     <option value="" disabled selected>- Seleziona Stato Approvazione Consap -</option>
-   {statoApprovazioneConsap.map((statoApprovazioneConsap, statoApprovazioneConsapId) => (
+   {statoApprovazioneConsap.length > 0 && (
      <option
-       key={statoApprovazioneConsapId}
-       value={statoApprovazioneConsap.statoApprovazioneConsapId}
+       key={statoApprovazioneConsap[0].statoApprovazioneConsapId}
+       value={statoApprovazioneConsap[0].statoApprovazioneConsapId}
      >
-       {statoApprovazioneConsap.descStatoApprovazioneConsap}
+       {statoApprovazioneConsap[0].descStatoApprovazioneConsap}
      </option>
-   ))}
+   )}
   </select>
 </div>
 </div>
@@ -513,14 +480,14 @@ const salvaRichiesta = async () => {
   <select  id="statoRichiestaOSId"
    placeholder='Stato Richiesta OS'value={statoRichiestaOsId} onChange={handleStatoRichiestaOsChange}>
     <option value="" disabled selected>- Seleziona Stato Richiesta OS -</option>
-   {statoRichiestaOs.map((statoRichiestaOs, statoRichiestaOsId) => (
+   {statoRichiestaOs.length > 0 && (
      <option
-       key={statoRichiestaOsId}
-       value={statoRichiestaOs.statoRichiestaOsId}
+       key={statoApprovazioneOs[0].statoRichiestaOsId}
+       value={statoRichiestaOs[0].statoRichiestaOsId}
      >
-       {statoRichiestaOs.descStatoRichiestaOs}
+       {statoRichiestaOs[0].descStatoRichiestaOs}
      </option>
-   ))}
+   )}
   </select>
 </div>
 </div>
@@ -531,14 +498,14 @@ const salvaRichiesta = async () => {
   <select  id="statoApprovazioneOsId"
    placeholder='Stato Approvazione OS'value={statoApprovazioneOsId} onChange={handleStatoApprovazioneOsChange}>
     <option value="" disabled selected>- Seleziona Stato Approvazione OS -</option>
-   {statoApprovazioneOs.map((statoApprovazioneOs, statoApprovazioneOsId) => (
+   {statoApprovazioneOs.length > 0 && (
      <option
-       key={statoApprovazioneOsId}
-       value={statoApprovazioneOs.statoApprovazioneOsId}
+       key={statoApprovazioneOs[0].statoApprovazioneOsId}
+       value={statoApprovazioneOs[0].statoApprovazioneOsId}
      >
-       {statoApprovazioneOs.descStatoApprovazioneOs}
+       {statoApprovazioneOs[0].descStatoApprovazioneOs}
      </option>
-   ))}
+   )}
   </select>
 </div>
 </div>
@@ -614,7 +581,9 @@ const salvaRichiesta = async () => {
 
 </div>
 </div>
-
+{/* </div>
+</div>
+ */}
 
 
 

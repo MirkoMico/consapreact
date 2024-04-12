@@ -374,7 +374,9 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
 
 
 
-     
+    
+    
+    console.log("Stato Richiesta Consap mappato:", statoRichiestaConsap[0]);
     
       
 
@@ -604,7 +606,7 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
 
  
 
-               <div className="form-group col-md-4 shadow select-wrapper">
+{/*     <div className="form-group col-md-4 shadow select-wrapper">
   <label>Stato Richiesta CONSAP</label>
   <select
     id="statoRichiestaConsap"
@@ -614,16 +616,66 @@ const handleDataStimaFineChange = (event, outerIndex, innerIndex) => {
     <option value="" disabled>
       - Seleziona Stato Richiesta CONSAP -
     </option>
-    {statoRichiestaConsap.map((stato, index) => (
-      <option
-        key={index}
-        value={stato.statoRichiestaConsapId}
-      >
-        {stato.descStatoRichiestaConsap}
-      </option>
-    ))}
+
+    
+ 
+     {statoRichiestaConsap.map((stato, index) => (
+  <option
+    key={index}
+    value={stato.statoRichiestaConsapId} 
+  >
+    {stato.descStatoRichiestaConsap} 
+  </option>
+))}  
+
+  </select>
+</div>   */}
+
+<div className="form-group col-md-4 shadow select-wrapper">
+  <label>Stato Richiesta CONSAP</label>
+  <select
+    id="statoRichiestaConsap"
+    onChange={(event) => handleStatoRichiestaConsapChange(event, outerIndex, innerIndex)}
+    value={item.statoRichiestaConsap.statoRichiestaConsapId} // Imposta il valore della combo-box con l'ID ereditato
+  >
+    <option value="" disabled>
+      - Seleziona Stato Richiesta CONSAP -
+    </option>
+    
+    {/* Filtra e mappa gli elementi con ID maggiore di item.statoRichiestaConsap.statoRichiestaConsapId */}
+   {/*  {statoRichiestaConsap
+      .filter((stato) => stato.statoRichiestaConsapId > item.statoRichiestaConsap.statoRichiestaConsapId +1)
+      .map((stato, index) => (
+        <option
+          key={index}
+          value={stato.statoRichiestaConsapId} 
+        >
+          {stato.descStatoRichiestaConsap} 
+        </option>
+      ))
+    }   */}
+
+   
+   
+       {/* Filtra e mappa solo l'elemento con lo stesso ID e successivo */}
+    {statoRichiestaConsap.slice(outerIndex, outerIndex + 2)
+      .map((stato, index) => (
+        <option
+          key={index}
+          value={stato.statoRichiestaConsapId} 
+        >
+          {stato.descStatoRichiestaConsap} 
+        </option>
+      ))
+    }  
   </select>
 </div>
+
+
+
+
+
+
 
     </div>
       
